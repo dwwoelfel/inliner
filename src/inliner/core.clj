@@ -32,15 +32,30 @@
       [(keyword sel') (h/attr? (keyword attr))])
     sel))
 
+(defn format-number
+  "Converts numbers to ints if possible to prevent breaking style
+  functions that only accept ints, e.g. rgba"
+  [number]
+  (if (zero? (- number (int number)))
+    (int number)
+    number))
+
+(defn val->str
+  "Converts parsed css value to inline style"
+  [v]
+  (case (:kind v)
+    :string-list (str/join ", " (map val->str (:content v)))
+    :color (str "#" (:content v))
+    :number-with-unit (apply str (:content v))
+    :number (parse-number (:content v))
+    :function-call (str (:function (:content v)) "(" (str/join ", " (map val->str (:args (:content v)))) ")")
+    (:content v)))
+
 (defn styles->selectors
   "Given a collection of style strings, parse them and return a vector of
   [[<enlive-selector> <style-string]..]"
   [styles]
-  (let [parsed-rules (parse-css (join styles))
-        val->str (fn [v] (case (:kind v)
-                           :color (str "#" (:content v))
-                           :number-with-unit (apply str (:content v))
-                           (:content v)))]
+  (let [parsed-rules (parse-css (join styles))]
     (mapcat (fn [{rule :content}]
               (let [selectors (->> (get-in rule [:selector :content])
                                    (map :content)
