@@ -82,13 +82,16 @@
   [style]
   (fn [elt] (update-in elt [:attrs :style] str style)))
 
+(defn apply-selectors [html sels]
+  (join (h/emit* (reduce (fn [doc [sel sty]]
+                           (h/transform doc sel (append-style sty)))
+                         html
+                         sels))))
+
 (defn inline-css
   "Given a string representation of an html document, inline css from both
   style tags and linked stylesheets (which are assumed to be in ./resources."
   [html-str]
   (let [html (h/html-resource (java.io.StringReader. html-str))
         sels (styles->selectors (extract-styles html))]
-    (join (h/emit* (reduce (fn [doc [sel sty]]
-                             (h/transform doc sel (append-style sty)))
-                           (remove-style-tags html)
-                           sels)))))
+    (apply-selectors (remove-style-tags html) sels)))
