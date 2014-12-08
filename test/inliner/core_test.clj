@@ -31,7 +31,7 @@
                        "  <body>"
                        "    <h1 style=\"font-size: 2.0em; background-color: #ff0000;\">Hello world!</h1>"
                        "    <p style=\"font-size: 1.0em;\">This is something</p>"
-                       "    <ul style=\"margin: 0.0;\">"
+                       "    <ul style=\"margin: 0;\">"
                        "       <li><p style=\"font-size: 1.0em;border: 1.0px solid #000000;\">bloop</p></li>"
                        "       <li style=\"font-color: #00ff00;\" class=\"foo\">"
                        "           <p style=\"font-size: 1.0em;border: 1.0px solid #000000;\">blap</p>"
