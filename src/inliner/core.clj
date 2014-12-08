@@ -47,7 +47,7 @@
     :string-list (str/join ", " (map val->str (:content v)))
     :color (str "#" (:content v))
     :number-with-unit (apply str (:content v))
-    :number (parse-number (:content v))
+    :number (format-number (:content v))
     :function-call (str (:function (:content v)) "(" (str/join ", " (map val->str (:args (:content v)))) ")")
     (:content v)))
 
