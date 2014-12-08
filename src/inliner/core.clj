@@ -44,11 +44,11 @@
   "Converts parsed css value to inline style"
   [v]
   (case (:kind v)
-    :string-list (str/join ", " (map val->str (:content v)))
+    :string-list (join ", " (map val->str (:content v)))
     :color (str "#" (:content v))
     :number-with-unit (apply str (:content v))
     :number (format-number (:content v))
-    :function-call (str (:function (:content v)) "(" (str/join ", " (map val->str (:args (:content v)))) ")")
+    :function-call (str (:function (:content v)) "(" (join ", " (map val->str (:args (:content v)))) ")")
     (:content v)))
 
 (defn styles->selectors
